@@ -2,7 +2,14 @@
 
 <p align="center">A cli tool that keeps your translations in sync</p>
 
+<p align="center">
+  <a href="https://www.npmjs.com/package/i18n-gap"><img src="https://img.shields.io/npm/v/i18n-gap?logo=npm" alt="npm version"></a>
+  <a href="https://github.com/rznn7/i18n-gap"><img src="https://img.shields.io/badge/dependencies-0-brightgreen.svg" alt="Zero Dependencies"></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+</p>
+
 <pre align="center">npx <b>i18n-gap</b></pre>
+
 
 ## Features
 
