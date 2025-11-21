@@ -1,0 +1,50 @@
+{
+	"name": "i18n-gap",
+	"version": "1.0.0",
+	"description": "A cli tool that keeps your translations in sync",
+	"author": {
+		"name": "rznn7",
+		"email": "160644362+rznn7@users.noreply.github.com",
+		"url": "https://github.com/rznn7"
+	},
+	"license": "MIT",
+	"homepage": "https://github.com/rznn7/i18n-gap#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/rznn7/i18n-gap.git"
+	},
+	"bugs": {
+		"url": "https://github.com/rznn7/i18n-gap/issues"
+	},
+	"bin": {
+		"i18n-gap": "./src/index.js"
+	},
+	"files": [
+		"src"
+	],
+	"scripts": {
+		"biome:check": "biome check --write",
+		"prepare": "biome format .",
+		"release:patch": "npm version patch && git push --follow-tags"
+	},
+	"keywords": [
+		"i18n",
+		"translation",
+		"localization",
+		"internationalization",
+		"cli",
+		"json",
+		"sync",
+		"ngx-translate",
+		"i18next",
+		"angular",
+		"vue",
+		"react"
+	],
+	"devDependencies": {
+		"@biomejs/biome": "2.3.7"
+	},
+	"engines": {
+		"node": ">=18"
+	}
+}
