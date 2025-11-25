@@ -23,8 +23,7 @@
 		"src"
 	],
 	"scripts": {
-		"biome:check": "biome check --write",
-		"prepare": "biome format .",
+		"test": "vitest",
 		"release:patch": "npm version patch && git push --follow-tags"
 	},
 	"keywords": [
@@ -42,7 +41,8 @@
 		"react"
 	],
 	"devDependencies": {
-		"@biomejs/biome": "2.3.7"
+		"@biomejs/biome": "2.3.7",
+		"vitest": "^4.0.14"
 	},
 	"engines": {
 		"node": ">=18"
