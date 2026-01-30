@@ -34,40 +34,45 @@ $ i18n-gap generate
 Reference language: en
 Analyzing 3 languages: en, fr, es
 
+Keys with gaps: 14
+
 en: reference (42 keys)
 fr: 6 missing
-  app.title
-  user.greeting
-  ... +4 more
 es: 12 missing
 
-Generated: translation-gaps.json
+Generated: ./translation-gaps.json
 ```
 
-This creates a `translation-gaps.json` file with all missing keys:
+This creates a `translation-gaps.json` file with all missing keys, grouped by key:
 
 ```json
 {
-  "fr": {
-    "app.title": "My App",
-    "user.greeting": "Hello, {{name}}!"
+  "app.title": {
+    "en": "My App",
+    "fr": "",
+    "es": ""
   },
-  "es": {
-    "app.title": "My App"
+  "user.greeting": {
+    "en": "Hello, {{name}}!",
+    "fr": "",
+    "es": "Hola, {{name}}!"
   }
 }
 ```
 
-Fill in the translations:
+Fill in the translations (empty strings are the missing ones):
 
 ```json
 {
-  "fr": {
-    "app.title": "Mon Application",
-    "user.greeting": "Bonjour, {{name}} !"
+  "app.title": {
+    "en": "My App",
+    "fr": "Mon Application",
+    "es": "Mi Aplicación"
   },
-  "es": {
-    "app.title": "Mi Aplicación"
+  "user.greeting": {
+    "en": "Hello, {{name}}!",
+    "fr": "Bonjour, {{name}} !",
+    "es": "Hola, {{name}}!"
   }
 }
 ```
@@ -81,18 +86,23 @@ Fill in the translations:
 # Preview changes
 $ i18n-gap apply --dry-run
 
-fr: would add 6 translations
+DRY RUN MODE - No files will be modified
+
+fr: would add 2 translations
   + app.title: Mon Application
   + user.greeting: Bonjour, {{name}} !
-  ...
+es: would add 1 translation
+  + app.title: Mi Aplicación
+
+Would add 3 translations
 
 # Apply when ready
 $ i18n-gap apply
 
-fr: +6
-es: +12
+fr: +2
+es: +1
 
-Added 18 translations
+Added 3 translations
 ```
 
 <br>
