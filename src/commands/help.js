@@ -1,14 +1,16 @@
 const { colors } = require("../utils/logger");
+const { version } = require("../../package.json");
 
 function helpCommand() {
 	console.log(`
-${colors.cyan}i18n-gap${colors.reset} - Translation file manager
+${colors.cyan}i18n-gap${colors.reset} v${version} - Translation file manager
 
 ${colors.yellow}Commands:${colors.reset}
   generate    Generate missing translations file
   apply       Apply completed translations to source files
   stats       Show completion statistics
   init        Create a .i18ngaprc.json config file
+  version     Show version number
   help        Show this help
 
 ${colors.yellow}Options:${colors.reset}

@@ -9,6 +9,7 @@ const {
 	statsCommand,
 	initCommand,
 	helpCommand,
+	versionCommand,
 } = require("./commands");
 
 const config = loadConfig();
@@ -27,6 +28,9 @@ switch (command) {
 		break;
 	case "init":
 		initCommand();
+		break;
+	case "version":
+		versionCommand();
 		break;
 	case "help":
 	case undefined:
