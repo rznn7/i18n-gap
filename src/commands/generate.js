@@ -18,30 +18,29 @@ function generateCommand(config) {
 	log.dim(`Reference language: ${config.referenceLang}`);
 	log.dim(`Analyzing ${languages.length} languages: ${languages.join(", ")}`);
 
-	// Flatten reference translation (source of truth)
 	const referenceFlat = flattenObject(translations[config.referenceLang]);
 	const referenceKeys = Object.keys(referenceFlat);
 
-	// Flatten all translations
 	const flatTranslations = {};
 	Object.keys(translations).forEach((lang) => {
 		flatTranslations[lang] = flattenObject(translations[lang]);
 	});
 
-	// Find gaps (only check against reference keys)
-	const gaps = {};
-	languages.forEach((lang) => {
-		if (lang === config.referenceLang) return; // skip reference
+	const keysWithGaps = new Set();
+	const gapCounts = {};
 
-		gaps[lang] = {};
+	languages.forEach((lang) => {
+		if (lang === config.referenceLang) return;
+
+		gapCounts[lang] = 0;
 		referenceKeys.forEach((key) => {
 			if (!flatTranslations[lang][key]) {
-				gaps[lang][key] = referenceFlat[key];
+				keysWithGaps.add(key);
+				gapCounts[lang]++;
 			}
 		});
 	});
 
-	// Check for orphaned keys (keys in other languages but not in reference)
 	const orphans = {};
 	languages.forEach((lang) => {
 		if (lang === config.referenceLang) return;
@@ -55,21 +54,28 @@ function generateCommand(config) {
 		}
 	});
 
-	// Check if there are any gaps
-	const hasGaps = Object.values(gaps).some(
-		(langGaps) => Object.keys(langGaps).length > 0,
-	);
+	const hasGaps = keysWithGaps.size > 0;
 
 	if (!hasGaps && Object.keys(orphans).length === 0) {
 		log.success("All translations complete and aligned");
 		return;
 	}
 
-	// Save gaps file
-	const outputPath = path.join(config.outputDir, "translation-gaps.json");
-	fs.writeFileSync(outputPath, JSON.stringify(gaps, null, 2));
+	const output = {};
+	const sortedKeysWithGaps = Array.from(keysWithGaps).sort();
 
-	// Print summary
+	sortedKeysWithGaps.forEach((key) => {
+		output[key] = {};
+		languages.forEach((lang) => {
+			output[key][lang] = flatTranslations[lang][key] || "";
+		});
+	});
+
+	const outputPath = path.join(config.outputDir, "translation-gaps.json");
+	fs.writeFileSync(outputPath, JSON.stringify(output, null, 2));
+
+	log.plain("");
+	log.info(`Keys with gaps: ${keysWithGaps.size}`);
 	log.plain("");
 	languages.forEach((lang) => {
 		if (lang === config.referenceLang) {
@@ -77,23 +83,10 @@ function generateCommand(config) {
 			return;
 		}
 
-		const count = Object.keys(gaps[lang]).length;
+		const count = gapCounts[lang];
 
 		if (count > 0) {
 			log.warn(`${lang}: ${count} missing`);
-
-			if (count <= 3) {
-				Object.keys(gaps[lang]).forEach((key) => {
-					log.dim(`  ${key}`);
-				});
-			} else {
-				Object.keys(gaps[lang])
-					.slice(0, 2)
-					.forEach((key) => {
-						log.dim(`  ${key}`);
-					});
-				log.dim(`  ... +${count - 2} more`);
-			}
 		} else {
 			log.success(`${lang}: complete`);
 		}

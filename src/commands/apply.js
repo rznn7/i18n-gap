@@ -21,7 +21,17 @@ function applyCommand(config) {
 	let updatedCount = 0;
 	let skippedCount = 0;
 
-	Object.keys(completedTranslations).forEach((lang) => {
+	const byLang = {};
+	Object.keys(completedTranslations).forEach((key) => {
+		Object.keys(completedTranslations[key]).forEach((lang) => {
+			if (!byLang[lang]) {
+				byLang[lang] = {};
+			}
+			byLang[lang][key] = completedTranslations[key][lang];
+		});
+	});
+
+	Object.keys(byLang).forEach((lang) => {
 		const filePath = path.join(config.i18nDir, `${lang}.json`);
 
 		if (!fs.existsSync(filePath)) {
@@ -34,14 +44,14 @@ function applyCommand(config) {
 
 		let langUpdated = 0;
 		const updates = [];
-		Object.keys(completedTranslations[lang]).forEach((key) => {
-			const value = completedTranslations[lang][key];
+		Object.keys(byLang[lang]).forEach((key) => {
+			const value = byLang[lang][key];
 
-			if (value && value.trim() !== "") {
+			if (value && value.trim() !== "" && flat[key] !== value) {
 				flat[key] = value;
 				langUpdated++;
 				updates.push({ key, value });
-			} else {
+			} else if (!value || value.trim() === "") {
 				skippedCount++;
 			}
 		});
