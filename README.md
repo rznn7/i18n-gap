@@ -158,4 +158,4 @@ i18n-gap init          # Create config file
 
 ## License
 
-[MIT](./LICENSE) License © 2025 [rznn7](https://github.com/rznn7)
+[MIT](./LICENSE) License © 2026 [rznn7](https://github.com/rznn7)
